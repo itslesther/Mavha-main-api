@@ -1,0 +1,24 @@
+{
+  "name": "main-api",
+  "version": "1.0.0",
+  "description": "Backend for Mavha test",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lesther Caballero",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.9.2",
+    "multer": "^1.4.2",
+    "typescript": "^3.7.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.7.1"
+  }
+}
