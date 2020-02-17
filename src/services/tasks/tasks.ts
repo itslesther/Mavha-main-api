@@ -135,7 +135,7 @@ export default class Tasks {
     });
   }
 
-  
+
   uploadDocument(path: string, fileName: string) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -156,7 +156,7 @@ export default class Tasks {
           //   cacheControl: 'public, max-age=31536000',
           // },
         });
-        resolve({fileName, url: `https://storage.googleapis.com/${bucket.name}/tasks/${fileName}`});
+        resolve({path: `tasks/${fileName}`, url: `https://storage.googleapis.com/${bucket.name}/tasks/${fileName}`});
         
       } catch (err) {
         console.log(err);
