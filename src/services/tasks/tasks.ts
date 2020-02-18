@@ -15,6 +15,7 @@ export default class Tasks {
     files: {
       name: string;
       url: string;
+      path?: string;
     }[]
   ) {
     return new Promise(async (resolve, reject) => {
@@ -53,7 +54,7 @@ export default class Tasks {
     dueDate: number,
     priority: 'low' | 'medium' | 'high',
     description: string,
-    completed: boolean,
+    // completed: boolean,
     files: {
       name: string;
       url: string;
@@ -69,7 +70,7 @@ export default class Tasks {
           dueDate,
           priority,
           description,
-          completed,
+          // completed,
           files,
         });
 
@@ -140,23 +141,24 @@ export default class Tasks {
     return new Promise(async (resolve, reject) => {
       try {
 
-        const bucket = admin.storage().bucket();
+        const destination = `tasks/${fileName}`;
+        const url = await shared.newFile(path, destination);
 
-        await bucket.upload(path, {
-          public: true,
-          destination: `tasks/${fileName}`,
-          // Support for HTTP requests made with `Accept-Encoding: gzip`
-          // gzip: true,
-          // By setting the option `destination`, you can change the name of the
-          // object you are uploading to a bucket.
-          // metadata: {
-          //   // Enable long-lived HTTP caching headers
-          //   // Use only if the contents of the file will never change
-          //   // (If the contents will change, use cacheControl: 'no-cache')
-          //   cacheControl: 'public, max-age=31536000',
-          // },
-        });
-        resolve({path: `tasks/${fileName}`, url: `https://storage.googleapis.com/${bucket.name}/tasks/${fileName}`});
+        resolve({path: destination, url});
+        
+      } catch (err) {
+        console.log(err);
+        reject('anErrorHasOccured');
+      }
+    });
+  }
+
+  deleteDocument(path: string) {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        await shared.deleteFiles([path]);
+        resolve();
         
       } catch (err) {
         console.log(err);

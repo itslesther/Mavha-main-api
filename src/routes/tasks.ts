@@ -43,7 +43,7 @@ routes.get('/:taskId', ((req, res) => { //GET TASKS BY ID
 
 routes.put('/:taskId', ((req, res) => { //UPDATE TASK BY ID
 
-  taskService.updateTask(req.params.taskId, req.body.title, req.body.dueDate, req.body.priority, req.body.description, req.body.completed, req.body.files)
+  taskService.updateTask(req.params.taskId, req.body.title, req.body.dueDate, req.body.priority, req.body.description, req.body.files)
   .then(() => res.send({success: true, data: null, error: null}))
   .catch((err) => res.send({success: false, data: null, error: {code: err}}));
 
@@ -72,6 +72,14 @@ routes.post('/uploadDocument', upload.single('doc'), ((req,res) => {
     .then((info) => res.send({success: true, data: info, error: null}))
     .catch((err) => res.send({success: false, data: null, error: {code: err}}));
 
+}));
+
+
+routes.post('/deleteDocument', ((req,res) => {
+
+  taskService.deleteDocument(req.body.path)
+    .then(() => res.send({success: true, data: null, error: null}))
+    .catch((err) => res.send({success: false, data: null, error: {code: err}}));
 
 }));
 
