@@ -10,7 +10,7 @@ export default class Tasks {
     creator: string,
     title: string,
     dueDate: number,
-    priority: 'low' | 'medium' | 'high',
+    priority: 1 | 2 | 3,
     description: string,
     files: {
       name: string;
