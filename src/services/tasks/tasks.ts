@@ -7,16 +7,16 @@ const shared = new Shared();
 export default class Tasks {
 
   newTask(
-    creator: string,
-    title: string,
-    dueDate: number,
-    priority: 1 | 2 | 3,
-    description: string,
+    creator: string = null,
+    title: string = '',
+    dueDate: number = null,
+    priority: 1 | 2 | 3 = null,
+    description: string = '',
     files: {
       name: string;
       url: string;
       path?: string;
-    }[]
+    }[] = []
   ) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -52,7 +52,7 @@ export default class Tasks {
     taskId: string,
     title: string,
     dueDate: number,
-    priority: 'low' | 'medium' | 'high',
+    priority: 1 | 2 | 3,
     description: string,
     // completed: boolean,
     files: {
@@ -104,12 +104,35 @@ export default class Tasks {
 
 
 
-  getTasks() {
+  getTasks(
+    filter: {
+      limit: string,
+      startAfter: any,
+      creator: string,
+      priority: '1' | '2' | '3',
+      completed: string,
+      sortBy: string,
+      direction: 'desc' | 'asc'
+    }
+  ) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(filter);
         const db = admin.firestore();
+        let snapshot: FirebaseFirestore.QuerySnapshot;
 
-        const tasks = (await db.collection('tasks').orderBy('creationTS','desc').get()).docs.map(doc => doc.data());
+        let ref: FirebaseFirestore.Query = db.collection('tasks');
+
+        if(filter.creator) ref = ref.where('creator','==',filter.creator);
+        if(filter.priority) ref = ref.where('priority','==',+filter.priority);
+        if(filter.completed) ref = ref.where('completed','==',eval(filter.completed)); //AVOID OTHER FALSY VALUES
+        if(filter.sortBy && (!filter.priority || filter.sortBy !== 'priority')) ref = ref.orderBy(filter.sortBy, filter.direction)
+        else ref = ref.orderBy('creationTS', 'desc')
+
+        if(!filter.startAfter) snapshot = await ref.limit(+filter.limit).get();
+        else snapshot = await ref.startAfter(filter.startAfter).limit(+filter.limit).get();
+
+        const tasks = snapshot.docs.map(doc => doc.data());
 
         resolve(tasks);
           
@@ -158,6 +181,25 @@ export default class Tasks {
       try {
 
         await shared.deleteFiles([path]);
+        resolve();
+        
+      } catch (err) {
+        console.log(err);
+        reject('anErrorHasOccured');
+      }
+    });
+  }
+
+  updateTaskStatus(taskId: string, completed: boolean) {
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        const db = admin.firestore();
+        const batch = db.batch();
+
+        batch.update(db.doc(`tasks/${taskId}`), {completed});
+
+        await batch.commit();
         resolve();
         
       } catch (err) {

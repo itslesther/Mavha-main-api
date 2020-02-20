@@ -25,7 +25,7 @@ routes.post('/', ((req, res)=> { //NEW TASK
 
 routes.get('/', ((req, res) => { //GET TASKS
 
-  taskService.getTasks()
+  taskService.getTasks(req.query)
   .then((tasks) => res.send({success: true, data: tasks, error: null}))
   .catch((err) => res.send({success: false, data: null, error: {code: err}}));
 
@@ -75,9 +75,9 @@ routes.post('/uploadDocument', upload.single('doc'), ((req,res) => {
 }));
 
 
-routes.post('/deleteDocument', ((req,res) => {
+routes.post('/:taskId/updateTaskStatus', ((req,res) => {
 
-  taskService.deleteDocument(req.body.path)
+  taskService.updateTaskStatus(req.params.taskId, req.body.completed)
     .then(() => res.send({success: true, data: null, error: null}))
     .catch((err) => res.send({success: false, data: null, error: {code: err}}));
 
