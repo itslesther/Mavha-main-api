@@ -107,7 +107,7 @@ export default class Tasks {
   getTasks(
     filter: {
       limit: string,
-      startAfter: any,
+      startAfter: string,
       creator: string,
       priority: '1' | '2' | '3',
       completed: string,
@@ -127,10 +127,12 @@ export default class Tasks {
         if(filter.priority) ref = ref.where('priority','==',+filter.priority);
         if(filter.completed) ref = ref.where('completed','==',eval(filter.completed)); //AVOID OTHER FALSY VALUES
         if(filter.sortBy && (!filter.priority || filter.sortBy !== 'priority')) ref = ref.orderBy(filter.sortBy, filter.direction)
-        else ref = ref.orderBy('creationTS', 'desc')
-
+        else ref = ref.orderBy('creationTS', 'desc');
         if(!filter.startAfter) snapshot = await ref.limit(+filter.limit).get();
-        else snapshot = await ref.startAfter(filter.startAfter).limit(+filter.limit).get();
+        else  {
+          const doc = await db.doc(`tasks/${filter.startAfter}`).get();
+          snapshot = await ref.startAfter(doc).limit(+filter.limit).get();
+        }
 
         const tasks = snapshot.docs.map(doc => doc.data());
 
