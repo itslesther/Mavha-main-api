@@ -10,11 +10,34 @@ Backend made in Nodejs in order to implement a To-Do list app
 
 [https://mavha-main-api.herokuapp.com](https://mavha-main-api.herokuapp.com)
 
+## Task Interface
+
+A task has the following properties:
+
+|Param|type | Description
+|-- | -- | -- | -- | -- |
+| `id` | String | Task id
+| `creator` | String| user id of task creator. Null if task created when user is logged out
+| `title` | String | Task Title
+| `description` | String | Task Description
+|`dueDate` | Number | Due Date
+|`priority` | Number | 1 = Low, 2 = Medium, 3 = High
+| `files` | Array[TaskFile] | Task File info
+
+TaskFile follows the following interface: 
+| Param | type  | Description 
+|--|--|--|--|--|
+|`name`| String | File name (Ex: test.jpg
+|`url`| String  | File url (Ex: https://domain.com/test.jpg
+|`path`| String | File path on Database
+
+
 ## Functionalities
 
  - **Add Task: Add a task to the to-do list**
  *Method*: POST
  *route*: /tasks
+ *returns*: Task id
  *Request Body Params*:
  	
 |Param|type| Required | Default value | Description
@@ -37,6 +60,7 @@ TaskFile follows the following interface:
  - **Edit Task: Edit an already created task**
  *Method*: PUT
  *route*: /tasks/:id
+ *returns*: Null
  *Request Body Params*:
  	
 |Param|type| Required | Default value | Description
@@ -51,10 +75,12 @@ TaskFile follows the following interface:
  - **Delete Task: Delete an already created tasks**
   *Method*: DELETE
  *route*: /tasks/:id
+*returns*: Null
 
  - **List Tasks: Lists all the tasks in the app. it also has the following functionalities:**
  - *Method*: GET
  *route*: /tasks
+ *returns*: Array(Task)
  *Request Query Params*:
 
 |Param|type| Required | Default value | Description
@@ -72,10 +98,12 @@ Request example: [https://mavha-main-api.herokuapp.com/tasks?limit=5?completed=f
  - **Get Task: Get an already created tasks**
   *Method*: GET
  *route*: /tasks/:id
+*returns*: Task
 
  - **Update Task Status: Mark tas as completed/incomplete**
   *Method*: POST
  *route*: /tasks/:id/updateTaskStatus
+ *returns*: Null
  
 |Param|type| Required | Default value | Description
 |-- | -- | -- | -- | -- |
@@ -91,5 +119,6 @@ Run `npm install` in order to install required dependencies.
 
 Run `npm start` for a dev server running on `http://localhost:8080/`. The frontend must be running so the interface can work.
 
+
 ## Author
-Lesther Caballero
+Lesther Caballeros
