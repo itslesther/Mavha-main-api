@@ -128,10 +128,10 @@ export default class Tasks {
         if(filter.completed) ref = ref.where('completed','==',eval(filter.completed)); //AVOID OTHER FALSY VALUES
         if(filter.sortBy && (!filter.priority || filter.sortBy !== 'priority')) ref = ref.orderBy(filter.sortBy, filter.direction)
         else ref = ref.orderBy('creationTS', 'desc');
-        if(!filter.startAfter) snapshot = await ref.limit(+filter.limit).get();
+        if(!filter.startAfter) snapshot = await ref.limit(+filter.limit || 10).get();
         else  {
           const doc = await db.doc(`tasks/${filter.startAfter}`).get();
-          snapshot = await ref.startAfter(doc).limit(+filter.limit).get();
+          snapshot = await ref.startAfter(doc).limit(+filter.limit || 10).get();
         }
 
         const tasks = snapshot.docs.map(doc => doc.data());
