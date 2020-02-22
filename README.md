@@ -15,7 +15,7 @@ Backend made in Nodejs in order to implement a To-Do list app
 A task has the following properties:
 
 |Param|type | Description
-|-- | -- | -- | -- | -- |
+|-- | -- | -- |
 | `id` | String | Task id
 | `creator` | String| user id of task creator. Null if task created when user is logged out
 | `title` | String | Task Title
@@ -26,7 +26,7 @@ A task has the following properties:
 
 TaskFile follows the following interface: 
 | Param | type  | Description 
-|--|--|--|--|--|
+|--|--|--|
 |`name`| String | File name (Ex: test.jpg
 |`url`| String  | File url (Ex: https://domain.com/test.jpg
 |`path`| String | File path on Database
@@ -121,4 +121,4 @@ Run `npm start` for a dev server running on `http://localhost:8080/`. The fronte
 
 
 ## Author
-Lesther Caballeros
+Lesther Caballero
