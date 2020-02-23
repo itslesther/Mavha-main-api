@@ -93,7 +93,7 @@ TaskFile follows the following interface:
 | `sortBy` | String | No | Null | Order of tasks to return. (Ex: priority, dueDate)
 | `direction` | String | Only if `sortBy` set| Null | Order direction of tasks to return. (Ex: asc, desc)
 
-Request example: [https://mavha-main-api.herokuapp.com/tasks?limit=5?completed=false?sortBy=dueDate?direction=desc](https://mavha-main-api.herokuapp.com/tasks?limit=5?completed=false?sortBy=dueDate?direction=desc)
+Request example: [https://mavha-main-api.herokuapp.com/tasks?limit=5&completed=false&sortBy=dueDate&direction=desc](https://mavha-main-api.herokuapp.com/tasks?limit=5&completed=false&sortBy=dueDate&direction=desc)
 
  - **Get Task: Get an already created tasks**
   *Method*: GET
